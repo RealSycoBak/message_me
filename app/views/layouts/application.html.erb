@@ -29,6 +29,9 @@
   <body>
   <%= render "layouts/navigation" %>
   <div class="ui container">
+     <%= turbo_frame_tag "flash" do %>
+      <%= render 'shared/flash' %>
+    <% end %>
     <%= yield %>
   </div>
   </body>

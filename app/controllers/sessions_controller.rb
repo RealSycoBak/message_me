@@ -1,5 +1,6 @@
 class SessionsController < ApplicationController
-   
+    before_action :logged_in_redirect, only: %i[ new create ]
+    
     def new
     end
 
@@ -12,7 +13,7 @@ class SessionsController < ApplicationController
           
       else
          flash.now[:error] = "There was something wrong with your login information"
-         render :new, status: 422
+         render_flash
       end
   end
 
@@ -22,4 +23,18 @@ class SessionsController < ApplicationController
       redirect_to login_path
   end
 
+end
+
+
+private
+
+def logged_in_redirect
+    if logged_in?
+        flash[:error] = "You are already logged in"
+        redirect_to root_path
+    end
+end
+
+def render_flash
+    render turbo_stream: turbo_stream.update("flash", partial: "shared/flash")
 end
